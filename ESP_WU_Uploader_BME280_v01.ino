@@ -68,7 +68,13 @@ void loop() {
   UpdateTime();
   timenow = "now"; // or comment this line to upload the local time from the ESP time update
   if (!UploadDataToWU()); Serial.println("Error uploading to Weather Underground, trying next time");
-  delay(UpdateInterval);
+  delay(5*60*1000); // for a 5-min update rate
+  // or to make it sleep uncomment this section and comment out the sleep() line above
+  #ifdef ESP8266 
+    ESP.deepSleep(UpdateInterval, WAKE_RF_DEFAULT); // Sleep for the time set by 'UpdateInterval' 
+  #else 
+    ESP.deepSleep(UpdateInterval);                  // Sleep for the time set by 'UpdateInterval' 
+  #endif
 }
 
 boolean UploadDataToWU(){
