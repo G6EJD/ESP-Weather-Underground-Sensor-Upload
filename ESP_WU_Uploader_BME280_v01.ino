@@ -176,15 +176,17 @@ boolean UploadDataToWU(){
 }
 
 void ReadSensorInformation(){
-  float sensor_humidity    = bme.readHumidity(); 
-  float sensor_temperature = bme.readTemperature() * 9/5+32;         // Read temperature as Fahrenheit
-  float sensor_pressure    = bme.readPressure() / 100.0F * 0.02953 ; // Read pressure in in's"
+  float sensor_humidity     = bme.readHumidity(); 
+  float sensor_temperature  = bme.readTemperature() * 9/5+32;         // Read temperature as Fahrenheit
+  float sensor_temperatureC = bme.readTemperature();
+  float sensor_pressure     = bme.readPressure() / 100.0F * 0.02953 ; // Read pressure in in's"
   if (isnan(sensor_humidity) || isnan(sensor_temperature) || isnan(sensor_pressure)) { 
     Serial.println("Failed to read from BME280 sensor!"); 
     return; 
   } 
   WU_tempf     = String(sensor_temperature);
-  WU_dewptf    = String((sensor_temperature-(100-sensor_humidity)/5.0)*9/5+32);
+  // Td = T - ((100 - RH)/5.) where T and Td are in °C for a reasonable DP Calculation
+  WU_dewptf    = String((sensor_temperatureC-(100-sensor_humidity)/5.0)*9/5+32); // Needs to be reported in °F
   WU_humidity  = String(sensor_humidity,2);
   WU_baromin   = String(sensor_pressure,2);
 }
