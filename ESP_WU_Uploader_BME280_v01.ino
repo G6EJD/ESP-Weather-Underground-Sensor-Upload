@@ -1,4 +1,4 @@
- */
+ /*
    This software, the ideas and concepts is Copyright (c) David Bird 2018. All rights to this software are reserved.
  
  Any redistribution or reproduction of any part or all of the contents in any form is prohibited other than the following:
